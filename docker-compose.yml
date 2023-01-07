@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  juice-shop:
+    image: node:12
+    working_dir: /juice-shop
+    volumes:
+      - ./modsecurity.conf:/etc/modsecurity/modsecurity.conf
+    command: npm start
+    ports:
+      - "3000:3000"
+    depends_on:
+      - waf
+  waf:
+    image: modsecurity
+    command: apache2-foreground
+    volumes:
+      - ./modsecurity.conf:/etc/modsecurity/modsecurity.conf
